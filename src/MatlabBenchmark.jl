@@ -7,9 +7,6 @@ using CSV, DataFrames                  # read csv file into a DataFrame
 using MittagLeffler                    # define exact solution
 using FFTW                             # FDE solver dependency
 
-# define array with multiple step size values
-H = [2. ^(-i) for i in 2:8]
-
 # include benchmark function
 include("benchmark.jl")
 include("main.jl")
@@ -26,9 +23,8 @@ Mdata4 = CSV.read("data/Bench4.csv", DataFrame, header = 0)
 Mdata5 = CSV.read("data/Bench5.csv", DataFrame, header = 0)
 Mdata6 = CSV.read("data/Bench6.csv", DataFrame, header = 0)
 
-# export H and benchmark
+# export FDEsolver and benchmark
 export(FDEsolver)
 export(benchmark)
-export(H)
 
 end

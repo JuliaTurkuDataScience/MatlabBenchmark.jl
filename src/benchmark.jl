@@ -1,23 +1,26 @@
-function benchmark(Mdata, F, JF, Exact, tSpan, y0, β, par, H)
+function benchmark(Mdata, F, JF, Exact, tSpan, y0, β, par...)
+
+    H = [2. ^(-i) for i in 2:8]
+    h = 0
 
     Bench = zeros(length(H), 2, 2)
+    
     t = zeros()
     y = zeros()
     t1 = zeros()
     y1 = zeros()
-    h = 0
 
     for i in 1:length(H)
 
         h = H[i]
 
-        Bench[i, 1, 1] = mean(@benchmark FDEsolver($F, $tSpan, $y0, $β, $par, h = $h)).time * 10e-10
-        Bench[i, 2, 1] = mean(@benchmark FDEsolver($F, $tSpan, $y0, $β, $par, J = $JF, h = $h)).time * 10e-10
+        Bench[i, 1, 1] = mean(@benchmark FDEsolver($F, $tSpan, $y0, $β, $par..., h = $h)).time * 10e-10
+        Bench[i, 2, 1] = mean(@benchmark FDEsolver($F, $tSpan, $y0, $β, $par..., J = $JF, h = $h)).time * 10e-10
 
         if i >= 4
 
-            t, y = FDEsolver(F, tSpan, y0, β, par, h = h)
-            t1, y1 = FDEsolver(F, tSpan, y0, β, par, J = JF, h = h)
+            t, y = FDEsolver(F, tSpan, y0, β, par..., h = h)
+            t1, y1 = FDEsolver(F, tSpan, y0, β, par..., J = JF, h = h)
             Bench[i, 1, 2] = norm(y - map(Exact, t), 2)
             Bench[i, 2, 2] = norm(y1 - map(Exact, t), 2)
 

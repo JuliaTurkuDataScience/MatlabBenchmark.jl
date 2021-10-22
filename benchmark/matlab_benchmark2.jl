@@ -5,7 +5,7 @@ using SpecialFunctions
 
 tSpan = [0, 1]     # [intial time, final time]
 y0 = 0             # initial value
-β = 0.5            # order of the derivative
+β = 0.9            # order of the derivative
 
 # Equation
 par = β
@@ -18,7 +18,7 @@ JF(t, y, par) = -(3 / 2) .* y .^ (1 / 2)
 Exact(t) = t.^8 - 3 * t .^ (4 + β / 2) + 9 / 4 * t.^β
 
 # benchmark FDEsolver for different step size values
-p1, p2 = benchmark(MatlabBenchmark.Mdata2, F, JF, Exact, tSpan, y0, β, par, H)
+p1, p2 = benchmark(MatlabBenchmark.Mdata2, F, JF, Exact, tSpan, y0, β, par)
 
 # open first plot
 p1
