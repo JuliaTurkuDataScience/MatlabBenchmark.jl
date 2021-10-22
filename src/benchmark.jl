@@ -26,13 +26,15 @@ function benchmark(Mdata, F, JF, Exact, tSpan, y0, β, par, H)
     end
 
     # plot logplot of execution time
-    plot(H, Bench[:, :, 1], linewidth = 5, xscale = :log, yscale = :log, title = "Benchmark for Example 1", yaxis = "Time (Sc)", xaxis = "Step size", label = ["PI_PC" "PI_IM"])
-    plot!(H, Mdata[!, 1], linewidth = 5, xscale = :log, yscale = :log, label = "M_PI_PC")
-    plot!(H, Mdata[!, 2], linewidth = 5, xscale = :log, yscale = :log, label = "M_PI_IM")
+    p1 = plot(H, Bench[:, :, 1], linewidth = 5, xscale = :log, yscale = :log, title = "Benchmark for Example 1", yaxis = "Time (Sc)", xaxis = "Step size", label = ["PI_PC" "PI_IM"])
+        plot!(H, Mdata[!, 1], linewidth = 5, xscale = :log, yscale = :log, label = "M_PI_PC")
+        plot!(H, Mdata[!, 2], linewidth = 5, xscale = :log, yscale = :log, label = "M_PI_IM")
 
     # plot square norm of the error
-    plot(H[4:end], Bench[4:end, :, 2], yscale = :log, xscale = :log, linewidth = 5, title = "Square norm of the errors", yaxis = "Errors", xaxis = "Step size", label = ["PI_PC" "PI_IM"])
-    plot!(H[4:end], Mdata[4:end, 3], linewidth = 5, xscale = :log, ls = :dash, yscale = :log, label = "M_PI_PC")
-    plot!(H[4:end], Mdata[4:end, 4], linewidth = 5, xscale = :log, yscale = :log, ls = :dot, label = "M_PI_IM")
+    p2 = plot(H[4:end], Bench[4:end, :, 2], yscale = :log, xscale = :log, linewidth = 5, title = "Square norm of the errors", yaxis = "Errors", xaxis = "Step size", label = ["PI_PC" "PI_IM"])
+        plot!(H[4:end], Mdata[4:end, 3], linewidth = 5, xscale = :log, ls = :dash, yscale = :log, label = "M_PI_PC")
+        plot!(H[4:end], Mdata[4:end, 4], linewidth = 5, xscale = :log, yscale = :log, ls = :dot, label = "M_PI_IM")
+
+    return p1, p2
 
 end
