@@ -1,6 +1,6 @@
 push!(LOAD_PATH, "./src")
 push!(LOAD_PATH, "./data")
-using MatlabBenchmark
+using MatlabBenchmark, MittagLeffler
 
 # store problem parameters
 tSpan = [0, 5]     # [initial time, final time]
@@ -13,7 +13,13 @@ par = λ
 # define differential equation and its Jacobian
 F(t, y, par) = par * y
 JF(t, y, par) = par
-Exact(t) = mittleff(β, λ * t.^β)
+Exact1(t) = mittleff(β, λ * t.^β)
 
 # benchmark FDEsolver for different step size values
-benchmark(MatlabBenchmark.Mdata1, F, JF, Exact, tSpan, y0, β, par, H)
+p1, p2 = benchmark(MatlabBenchmark.Mdata1, F, JF, Exact1, tSpan, y0, β, par)
+
+# open first plot
+p1
+
+# open second plot
+p2

@@ -13,10 +13,10 @@ F(t, y, β) = t.^β * y .+ 4 * sqrt(t / π) .- t.^(2 + β)
 JF(t,y,β) = t.^β
 par=β
 
-Exact(t) = t.^2
+Exact5(t) = t.^2
 
 # benchmark FDEsolver for different step size values
-p1, p2 = benchmark(MatlabBenchmark.Mdata5, F, JF, Exact, tSpan, y0, β, par)
+p1, p2 = benchmark(MatlabBenchmark.Mdata5, F, JF, Exact5, tSpan, y0, β, par)
 
 # open first plot
 p1

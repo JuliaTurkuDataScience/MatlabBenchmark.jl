@@ -1,7 +1,6 @@
 push!(LOAD_PATH, "./src")
 push!(LOAD_PATH, "./data")
-using MatlabBenchmark
-using SpecialFunctions
+using MatlabBenchmark, SpecialFunctions
 
 tSpan = [0, 1]     # [intial time, final time]
 y0 = 0             # initial value
@@ -15,10 +14,10 @@ F(t, y, par) = (40320 ./ gamma(9 - par) .* t .^ (8 - par) .- 3 .* gamma(5 + par 
 # Jacobian
 JF(t, y, par) = -(3 / 2) .* y .^ (1 / 2)
 
-Exact(t) = t.^8 - 3 * t .^ (4 + β / 2) + 9 / 4 * t.^β
+Exact2(t) = t.^8 - 3 * t .^ (4 + β / 2) + 9 / 4 * t.^β
 
 # benchmark FDEsolver for different step size values
-p1, p2 = benchmark(MatlabBenchmark.Mdata2, F, JF, Exact, tSpan, y0, β, par)
+p1, p2 = benchmark(MatlabBenchmark.Mdata2, F, JF, Exact2, tSpan, y0, β, par, h0 = 2)
 
 # open first plot
 p1

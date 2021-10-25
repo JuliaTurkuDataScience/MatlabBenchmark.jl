@@ -1,7 +1,6 @@
 push!(LOAD_PATH, "./src")
 push!(LOAD_PATH, "./data")
-using MatlabBenchmark
-using SpecialFunctions
+using MatlabBenchmark, SpecialFunctions
 
 # Parameters
 tSpan = [0, 5]         # Time Span
@@ -19,7 +18,13 @@ function F(t, y)
 
 end
 
-Exact(t)=[t .+ 1; t.^1.2 .+ 0.5; t.^1.8 .+ 0.3]
+Exact4(t) = [t .+ 1; t.^1.2 .+ 0.5; t.^1.8 .+ 0.3]
 
 # benchmark FDEsolver for different step size values
-benchmark(MatlabBenchmark.Mdata4, F, Exact, tSpan, y0, β)
+p1, p2 = benchmark(MatlabBenchmark.Mdata4, F, Exact4, tSpan, y0, β)
+
+# open first plot
+p1
+
+# open second plot
+p2
