@@ -24,8 +24,6 @@ function benchmark(Mdata::DataFrame, F, JF, Exact, tSpan::Vector{<:Real}, y0::Un
         Bench[i, 1, 2] = norm(y - map(Exact, t), 2)
         Bench[i, 2, 2] = norm(y1 - map(Exact, t), 2)
 
-        end
-
     end
 
     # plot logplot of execution time
@@ -61,13 +59,9 @@ function benchmark(Mdata::DataFrame, F, Exact, tSpan::Vector{<:Real}, y0::Union{
 
         Bench[i, 1, 1] = mean(@benchmark FDEsolver($F, $tSpan, $y0, $β, h = $h)).time * 10e-10
 
-        if i >= 4
-
-            t, y = FDEsolver(F, tSpan, y0, β, h = h)
-            Exact = reshape(Exact(t), length(t), 3)
-            Bench[i, 1, 2] = norm(y - map(Exact, t))
-
-        end
+        t, y = FDEsolver(F, tSpan, y0, β, h = h)
+        Bench[i, 1, 2] = norm(y - map(Exact, t))
+        Exact = reshape(Exact(t), length(t), 3)
 
     end
 
