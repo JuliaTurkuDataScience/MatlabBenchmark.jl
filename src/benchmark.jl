@@ -41,7 +41,7 @@ function benchmark(Mdata::DataFrame, F, JF, Exact, tSpan::Vector{<:Real}, y0::Un
 end
 
 # benchmark only standard without additional parameters
-function benchmark(Mdata::DataFrame, F, Exact, tSpan::Vector{<:Real}, y0::Union{Real, Vector{<:Real}, Matrix{<:Real}}, β::Union{Real, Vector{<:Real}}; h0::Int64 = 1)
+function benchmark(Mdata::DataFrame, F, Exact, tSpan::Vector{<:Real}, y0::Union{Real, Vector{<:Real}, Matrix{<:Real}}, β::Union{Real, Vector{<:Real}}, par::Union{Real, Vector{<:Real}}; h0::Int64 = 1)
 
     H = [2. ^(-i) for i in h0 + 1:8]
     h = 0
@@ -76,5 +76,34 @@ function benchmark(Mdata::DataFrame, F, Exact, tSpan::Vector{<:Real}, y0::Union{
         plot!(H[4:end], Mdata[4:end, 4], linewidth = 5, xscale = :log, yscale = :log, ls = :dot, label = "M_PI_IM")
 
     return p1, p2
+
+end
+
+# benchmark for LongTerm Example
+function benchmark(Mdata::DataFrame, F, ::Nothing, tSpan::Vector{<:Real}, y0::Union{Real, Vector{<:Real}, Matrix{<:Real}}, β::Union{Real, Vector{<:Real}},  par::Union{Real, Vector{<:Real}, Vector{Any}}; h0::Int64 = 1)
+
+    H = [2. ^(-i) for i in h0 + 1:8]
+    h = 0
+
+    Bench = zeros(length(H), 2, 2)
+
+    t = zeros()
+    y = zeros()
+    t1 = zeros()
+    y1 = zeros()
+
+    for i in 1:length(H)
+
+        h = H[i]
+
+        Bench[i, 1, 1] = mean(@benchmark FDEsolver($F, $tSpan, $y0, $β, $par, h = $h)).time * 10e-10
+
+    end
+
+    # plot logplot of execution time
+    p1 = plot(H, Bench[:, 1, 1], linewidth = 5, title = "Benchmark for LongTerm", yaxis = "Time (Sc)", xaxis = "Step size", label = "Julia_PI_PC")
+        plot!(H, Mdata[!, 1], linewidth = 5, label = "MATLAB_PI_PC")
+
+    return p1
 
 end

@@ -1,10 +1,9 @@
-using FdeSolver
-using Plots
+push!(LOAD_PATH, "./src")
+push!(LOAD_PATH, "./data")
+using MatlabBenchmark
 
 ## inputs
 tSpan = [0, 5000] # time span
-
-H=[2^(-5), 2^(-6),  2^(-7), 2^(-8)]
 
 N = 20 # number of species
 
@@ -42,14 +41,5 @@ function F(t, x, par)
 
 end
 
-h=zeros()
-Bench=zeros(length(H))
-
-for i in 1:length(H)
-        h = H[i]
-    Bench[i]= mean(@benchmark FDEsolver(F, tSpan, X0, β, par, h=h)).time*10^-9
-end
-
-Mdata=DataFrame(CSV.File("BenchLongTerm.csv",header=0));
-plot(H[:],Bench[:],linewidth=5,title="Becnhmark longTerm",yaxis="Time(Sc)",xaxis="Step size", label="Julia")
-plot!(H[:],Mdata[!,1],linewidth=5, ls = :dot,label="MATLAB")
+# benchmark FDEsolver for different step size values
+p1 = benchmark(MatlabBenchmark.MLongTerm, F, nothing, tSpan, X0, β, par, h0 = 4)
